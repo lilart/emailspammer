@@ -2,7 +2,7 @@ import sys, smtplib, threading, datetime
 
 email = input("Your email: ")
 user = email.split("@")[0]
-passw = "Your password: "
+passw = input("Your password: ")
 
 help ="""Usage: python {} <TARGET_EMAIL> <MESSAGE>
 """.format(sys.argv[0])
