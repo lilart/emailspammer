@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import sys, smtplib, ssl, threading, time
     
 def spam(email, passw, target, message):
@@ -21,14 +22,18 @@ def spam(email, passw, target, message):
 if __name__ == "__main__":
     try:
         target = sys.argv[1]
-        message = sys.argv[2]
         email = sys.argv[3]
         threads = int(sys.argv[4])
     except:
-        print("Usage: python {} <TARGET_EMAIL> <MESSAGE> <YOUR_GMAIL> <THREADS_NUMBER>".format(sys.argv[0]))
+        print("Usage: python {} <TARGET_EMAIL> <MESSAGE_FILE> <YOUR_GMAIL> <THREADS_NUMBER>".format(sys.argv[0]))
+        quit()
+    try:
+        message = open(sys.argv[2], "r")
+    except:
+        print("{} doesmt exists".format(sys.argv[0]))
         quit()
     passw = input("Your password: ")
     print("Spamming started.")
     for i in range(100):
-        t = threading.Thread(target=spam, args=(email, passw, target, message))
+        t = threading.Thread(target=spam, args=(email, passw, target, message.read()))
         t.start()
