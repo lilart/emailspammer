@@ -40,3 +40,8 @@ if __name__ == "__main__":
     except:
         print("{} doesmt exists".format(sys.argv[0]))
         quit()
+    subject = input("Subject: ")
+    print("Spamming started\nInfo:\nFrom: {}\nTo: {}\nSubject:{}\nEmail:\n{}".format(email, target, subject, msg))
+    for i in range(10):
+        t = threading.Thread(target=spam, args=(email, passw, target,subject, msg))
+        t.start()
