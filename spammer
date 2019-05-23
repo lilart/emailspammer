@@ -13,7 +13,7 @@ def spam(email, passw, target, subject, msg):
             emailsent = MIMEText(msg, "plain")
             message.attach(emailsent)
             context = ssl.create_default_context()
-            port = 587
+            port = 465
             smtp_server = "smtp.gmail.com"
             context = ssl.create_default_context()
             with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
