@@ -1,0 +1,42 @@
+#!/usr/bin/env python3
+import sys, smtplib, ssl, threading, time
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+    
+def spam(email, passw, target, subject, msg):
+    try:
+        while True:
+            message = MIMEMultipart("alternative")
+            message["Subject"] = subject
+            message["From"] = email
+            message["To"] = target
+            emailsent = MIMEText(msg, "plain")
+            message.attach(emailsent)
+            context = ssl.create_default_context()
+            port = 587
+            smtp_server = "smtp.gmail.com"
+            context = ssl.create_default_context()
+            with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
+                server.login(email, passw)
+                server.sendmail(email, target, message.as_string())
+                print("\rEmail sent!", end="\r")
+                time.sleep(5)
+    except smtplib.SMTPAuthenticationError:
+        print("Too much logins, or password is incorrrect.")
+        quit()
+
+if __name__ == "__main__":
+    try:
+        target = sys.argv[1]
+        email = sys.argv[3]
+        passw = sys.argv[4]
+    except:
+        print("Usage: python {} <TARGET_EMAIL> <MESSAGE_FILE> <YOUR_GMAIL> <PASSWORD>".format(sys.argv[0]))
+        quit()
+    try:
+        file = open(sys.argv[2], "r")
+        msg = file.read()
+        file.close()
+    except:
+        print("{} doesmt exists".format(sys.argv[0]))
+        quit()
