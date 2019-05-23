@@ -1,13 +1,23 @@
 #!/usr/bin/env python3
-import sys, smtplib, ssl, threading, time
+import sys, smtplib, ssl, threading, time, string
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
     
 def spam(email, passw, target, subject, msg):
     try:
+        characters = []
+        lower = string.ascii_lowercase
+        upper = string.ascii_uppercase
+        digit = string.digits
+        for i in lower:
+            characters.append(i)
+        for i in upper:
+            characters.append(i)
+        for i in digit:
+            characters.append(i)
         while True:
             message = MIMEMultipart("alternative")
-            message["Subject"] = subject
+            message["Subject"] = subject+"        "+characters[random.randint(0,len(characters)-1)]
             message["From"] = email
             message["To"] = target
             emailsent = MIMEText(msg, "plain")
@@ -16,6 +26,7 @@ def spam(email, passw, target, subject, msg):
             port = 465
             smtp_server = "smtp.gmail.com"
             context = ssl.create_default_context()
+            x += 1
             with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
                 server.login(email, passw)
                 server.sendmail(email, target, message.as_string())
