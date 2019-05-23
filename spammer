@@ -19,8 +19,9 @@ def spam(email, passw, target, subject, msg):
             with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
                 server.login(email, passw)
                 server.sendmail(email, target, message.as_string())
+                server.quit()
                 print("\rEmail sent!", end="\r")
-                time.sleep(5)
+                time.sleep(3)
     except smtplib.SMTPAuthenticationError:
         print("Too much logins, or password is incorrrect.")
         quit()
