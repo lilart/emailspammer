@@ -26,7 +26,6 @@ def spam(email, passw, target, subject, msg):
             port = 465
             smtp_server = "smtp.gmail.com"
             context = ssl.create_default_context()
-            x += 1
             with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
                 server.login(email, passw)
                 server.sendmail(email, target, message.as_string())
