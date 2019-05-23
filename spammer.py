@@ -28,7 +28,9 @@ if __name__ == "__main__":
         print("Usage: python {} <TARGET_EMAIL> <MESSAGE_FILE> <YOUR_GMAIL> <THREADS_NUMBER>".format(sys.argv[0]))
         quit()
     try:
-        message = open(sys.argv[2], "r")
+        file = open(sys.argv[2], "r")
+        message = file.read()
+        file.close()
     except:
         print("{} doesmt exists".format(sys.argv[0]))
         quit()
