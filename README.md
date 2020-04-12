@@ -1,6 +1,8 @@
 # emailspammer
 Sends a lot of emails to someone, if he has email notifications on his phone turned on, it is very annoying.
-This program is only available for being used with gmail, the email sender must be a gmail account.
+This program can only be used with gmail, that means that the email sender must be a gmail account.
+
+Please do not use this for illegal purposes.
 
 ## usage
 ```
